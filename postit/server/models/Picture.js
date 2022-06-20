@@ -2,14 +2,14 @@ import mongoose from "mongoose";
 const Schema = mongoose.Schema;
 const ObjectId = Schema.Types.ObjectId
 
-export const AlbumSchema = new Schema({
+export const PictureSchema = new Schema({
   creatorId: {type: ObjectId, ref:'Account', required: true},
-  name: {type:String, required:true},
-  coverImg: {type:String, required:true}
+  imgUrl: {type: String, required: true},
+  albumId: {type: ObjectId, ref:'Album', required: true}
 },
 {timestamps: true, toJSON: { virtuals: true}});
 
-AlbumSchema.virtual('creator', {
+PictureSchema.virtual('creator', {
   localField: 'creatorId',
   foreignField: '_id',
   justOne:true,
