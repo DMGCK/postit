@@ -9,14 +9,14 @@ export const AlbumMemberSchema = new Schema({
 },
   {timestamps: true, toJSON: { virtuals: true}});
 
-AlbumMemberSchema.virtual('collaborators', {
+AlbumMemberSchema.virtual('collaborator', {
   localField: 'accountId',
   foreignField: '_id',
   ref: 'Account',
   justOne: true
 })
 
-AlbumMemberSchema.virtual('albums', {
+AlbumMemberSchema.virtual('album', {
   localField: 'albumId',
   foreignField: '_id', 
   ref: 'Album',
