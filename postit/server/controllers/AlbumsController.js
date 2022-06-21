@@ -3,6 +3,7 @@ import { albumsService } from "../services/AlbumsService";
 import { picturesService } from "../services/PicturesService";
 import BaseController from "../utils/BaseController";
 import { logger } from "../utils/Logger";
+import { albumMembersService } from "../services/AlbumMembersService";
 
 
 
@@ -13,6 +14,7 @@ export class AlbumsController extends BaseController {
     .get('/', this.getAll)
     .get('/:id', this.getById)
     .get('/:id/pictures', this.getPicturesByAlbum)
+    .get('/:id/members', this.getMembersByAlbumId)
     .use(Auth0Provider.getAuthorizedUserInfo)
     .post('/', this.create)
     .put('/:id', this.edit)
@@ -20,7 +22,7 @@ export class AlbumsController extends BaseController {
 
   }
   async getAll(req, res, next) {
-   try {
+    try {
       // @ts-ignore
       const albums = await albumsService.getAll(req.query)
       res.send(albums)
@@ -40,12 +42,20 @@ export class AlbumsController extends BaseController {
    try {
     const pictures = await picturesService.getByAlbumId(req.params.id)
     return res.send(pictures)
-   } catch (error) {
-   next(error);
-   }
+  } catch (error) {
+    next(error);
   }
-  async create(req, res, next) {
-    req.body.creatorId = req.userInfo.id
+}
+  async getMembersByAlbumId(req, res, next) {
+  try {
+    const members = await albumMembersService.getByAlbumId(req.params.id)
+    return res.send(members)
+  } catch (error) {
+  next(error)
+  }
+}
+async create(req, res, next) {
+  req.body.creatorId = req.userInfo.id
    try {
      // @ts-ignore
      const album = await albumsService.create(req.body) 

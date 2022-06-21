@@ -26,7 +26,7 @@ class AlbumsService {
   async delete(albumId, userId) {
     const album = await this.getById(albumId)
     if(album.creatorId.toString() != userId){
-      throw new Forbidden("kys")
+      throw new Forbidden("You can't do that")
     }
     await album.remove()
   }
